@@ -1,70 +1,121 @@
-/*Considere la siguiente relación de herencia, la cual involucra tres clases: alumno, Deportista y BecaDeporte. Esta ultima representa a aquellos alumnos que son deportistas y que por esa razón han recibido una beca especial del gobierno para premiar sus esfuerzos. Decia que atributos y métodos incluir de tal manera que su programa pueda:
-A)	Declarar dos objetos llamados alumnoJuan y alumnoPedro de tipo Alumno.
-B)	Delcarar un objeto llamado deporLuis de tipo Deportista.
-C)	Declarar dos objetos llamados bdAna y bdCarmen de tipo BecadoDeportista.
-D)	Imprimir los datos de todos los objetos declarados.
-E)	Actualizar el nombre de la carrera que están estudiando alumnoJuan y bdAna. El dato dado por el usuario sera el nombre de la nueva carrera.
-F)	Actualizar el nombre del entrenador deporLuis y bdCarmen. El dato por el usuario será el nombre del nuevo entrenador.
-G)	Actualizar el monto de la beca de bdAna y bdCarmen. El dato ddado por el usuario será el porcentaje de incremento de la beca actual.*/
+/*Ejercicio 3:
+Crear un programa para simular un equipo de futbol (futbolista, entrenador y doctor), para lo cual tendremos lo siguiente:
+•	Una clase base Persona, que tendrá los siguientes datos: nombre, apellido, edad.
+•	La clase derivada Futbolista tendrá los siguientes datos: dorsal y posición.
+•	La clase derivada Entrenador tendrá de dato la estrategia que utiliza.
+•	La clase derivada Medico, la titulación y los años de experiencia.
+Hacer un menú donde se tengan las siguientes opciones:
+a)	Viaje en equipo
+b)	Entrenamiento
+c)	Partido de futbol
+d)	Planificar entrenamiento
+e)	Entrevista
+f)	Curar lesión */
 #include <iostream>
-#include "Alumno.h"
-#include "Deportista.h"
-#include "Deporte.h"
+#include "Persona.h"
+#include "Futbolista.h"
+#include "Entrenador.h"
+#include "Medico.h"
 using namespace std;
+
+Persona* equipo[4];
+
+void viajarE(){
+    for(int i=0; i<4; i++){
+         cout<<equipo[i]->getNombre()<<" "<<equipo[i]->getApellido()<<" -> ";
+         equipo[i]->viajar();
+    }
+}
+
+void entrenamientoE(){
+    for(int i=0;i<4;i++){
+        cout<<equipo[i]->getNombre()<<" "<<equipo[i]->getApellido()<<" -> ";
+        equipo[i]->entrenamiento();
+    }
+}
+
+void partidoFutbolE(){
+    for(int i=0;i<4;i++){
+        cout<<equipo[i]->getNombre()<<" "<<equipo[i]->getApellido()<<" -> ";
+        equipo[i]->partidoFutbol();
+    }
+}
+
+void planificarEntrenamientoE(){ //downcasting entrenador
+        cout<<equipo[2]->getNombre()<<" "<<equipo[2]->getApellido()<<" -> ";
+        ((Entrenador*)equipo[2])->planificarEntrenamiento();
+
+}
+
+void entrevistaE(){
+    cout<<equipo[0]->getNombre()<<" "<<equipo[0]->getApellido()<<" -> ";
+        ((Futbolista*)equipo[0])->entrevista();
+
+    cout<<equipo[1]->getNombre()<<" "<<equipo[1]->getApellido()<<" -> ";
+        ((Futbolista*)equipo[1])->entrevista();
+}
+
+void curarLesionE(){
+        cout<<equipo[3]->getNombre()<<" "<<equipo[3]->getApellido()<<" -> ";
+        ((Medico*)equipo[3])->curarLesion();
+}
+
+void menu(){
+    int opcion;
+
+    do{
+        cout<<"\t. :MENU:."<<endl;
+        cout<<"1. Viaje en equipo"<<endl;
+        cout<<"2. Entrenamiento"<<endl;
+        cout<<"3. Partido de futbol"<<endl;
+        cout<<"4. Planificar entrenamiento"<<endl;
+        cout<<"5. Entrevista"<<endl;
+        cout<<"6. Curar lesion"<<endl;
+        cout<<"7. Salir"<<endl;
+        cout<<"Digite una opcion: ";
+        cin>>opcion;
+        cout<<endl;
+
+        switch(opcion){
+            case 1: //viaje en equipo
+                    viajarE();
+                    break;
+            case 2: //entrenamiento
+                    entrenamientoE();
+                    break;
+            case 3: //partido de futbol
+                    partidoFutbolE();
+                    break;
+            case 4: //planificar entrenamiento
+                    planificarEntrenamientoE();
+                    break;
+            case 5: //entrevista
+                    entrevistaE();
+                    break;
+            case 6: //curar lesion  
+                    curarLesionE();
+                    break;
+            case 7: //salir
+                    cout<<"\nSaliendo del programa..."<<endl;
+                    break;
+            default:    
+                    cout<<"\nOpcion no valida"<<endl;
+                    break;
+        }
+        cout<<endl;
+        system("pause");
+        system("cls");
+    } while(opcion != 7);
+}
 
 int main(int argc, char **argv)
 {
-    Alumno *alumnoJuan = new Alumno("Ingenieria de Sistemas");
-    Alumno *alumnoPedro = new Alumno("Medicina");
-    Deportista *deporLuis = new Deportista("Naruto Uzumaki");
-    BecadoDeporte *bdAna = new BecadoDeporte("Administracion", "Sakura Haruno", 1500);
-    BecadoDeporte *bdCarmen = new BecadoDeporte("Derecho", "Kakashi Hatake", 2000);
+    equipo[0] = new Futbolista("Gonzalo","Higuain",30,9,"Delantero");
+    equipo[1] = new Futbolista("Paulo", "Dybala", 24, 10, "Delantero");
+    equipo[2] = new Entrenador("Massimiliano", "Allegri", 50, "Defensiva");
+    equipo[3] = new Medico("Alex", "Marroni", 53, "Fisioterapeuta", 20);
+    //menu
+    menu();
 
-    cout << "\t\nMostrando datos: " << endl;
-    cout << "\nMostrando datos de alumnoJuan: " << endl;
-    alumnoJuan->mostrarDatos();
-    cout << "\nMostrando datos de alumnoPedro: " << endl;
-    alumnoPedro->mostrarDatos();
-    cout << "\nMostrando datos de deporLuis: " << endl;
-    deporLuis->mostrarDatos();
-    cout << "\nMostrando datos de bdAna: " << endl;
-    bdAna->mostrarDatos();
-    cout << "\nMostrando datos de bdCarmen: " << endl;
-    bdCarmen->mostrarDatos();
-
-    string nuevaCarrera;
-    cout << "\nDigite el nombre de la carrera de alumnoJuan: ";
-    getline(cin, nuevaCarrera);
-    alumnoJuan->setNombreCarrera(nuevaCarrera);
-    cout << "Digite la nueva carrera de bdAna: ";
-    getline(cin, nuevaCarrera);
-    bdAna->setNombreCarrera(nuevaCarrera);
-    cout << "\nLa nueva carrera de alumnoJuan es: " << alumnoJuan->getNombreCarrera() << endl;
-    cout << "La nueva carrera de bdAna es: " << bdAna->getNombreCarrera() << endl;
-
-    string nuevoEntrenador; // apartado f resuelto
-    cout << "\nDigite el nombre del nuevo entrenador de deporLuis: ";
-    getline(cin, nuevoEntrenador);
-    deporLuis->setNombreEntrenador(nuevoEntrenador);
-    cout << "Digite el nombre del nuevo entrenador de bdCarmen: ";
-    getline(cin, nuevoEntrenador);
-    bdCarmen->setNombreEntrenador(nuevoEntrenador);
-    cout << "\nEl nuevo entrenador de deporLuis es: " << deporLuis->getNombreEntrenador() << endl;
-    cout << "El nuevo entrenador de bdCarmen es: " << bdCarmen->getNombreEntrenador() << endl;
-
-    float incremento;
-    cout << "\nDigite el incremento de bdAna: ";
-    cin >> incremento;
-    bdAna->setMontoBeca(incremento);
-    cout << "Digite el incremento de bdCarmen: ";
-    cin >> incremento;
-    bdCarmen->setMontoBeca(incremento);
-    cout << "\nEl nuevo monto de la beca de bdAna es: " << bdAna->getMontoBeca() << endl;
-    cout << "El nuevo monto de la beca de bdCarmen es: " << bdCarmen->getMontoBeca() << endl;
-
-    delete alumnoPedro;
-    delete deporLuis;
-    delete bdAna;
-    delete alumnoJuan;
     return 0;
 }
